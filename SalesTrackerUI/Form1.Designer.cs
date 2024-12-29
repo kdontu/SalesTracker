@@ -85,6 +85,7 @@
             button3.TabIndex = 2;
             button3.Text = "Create Sale";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // dataGridViewSales
             // 
@@ -168,6 +169,7 @@
             button1.TabIndex = 1;
             button1.Text = "Update";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // dataGridViewSalesPersons
             // 

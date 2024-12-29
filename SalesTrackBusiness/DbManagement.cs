@@ -15,7 +15,7 @@ namespace SalesTrackBusiness
         {
             // Code to initialize the database
             // Uncomment the line below to start fresh with a new database.
-            // this.dbContext.Database.EnsureDeleted();
+           // _salesTrackerContext.Database.EnsureDeleted();
             _salesTrackerContext.Database.EnsureCreated();
             _salesTrackerContext.Products.Load();   
         }

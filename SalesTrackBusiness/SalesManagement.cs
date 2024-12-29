@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SalesTrackBusiness.Entities;
+﻿using SalesTrackBusiness.Entities;
 using SalesTrackBusiness.Interfaces;
 using SalesTrackCommon.Entities;
-using SQLitePCL;
 
 namespace SalesTrackBusiness
 {
@@ -26,7 +20,7 @@ namespace SalesTrackBusiness
                     salesDTO.ProductId = sales.ProductId;
                     salesDTO.CustomerId = sales.CustomerId;
                     salesDTO.SalesDate = sales.SalesDate;
-                    salesDTO.SalePrice = sales.SalePrice;
+                    salesDTO.SalesPrice = sales.SalesPrice;
                     salesDTOList.Add(salesDTO);
                 }
             }
@@ -48,19 +42,19 @@ namespace SalesTrackBusiness
                 sales.ProductId = salesDTO.ProductId;
                 sales.CustomerId = salesDTO.CustomerId;
                 sales.SalesDate = salesDTO.SalesDate;
-                //sales.SalePrice = salesDTO.SalePrice;
+                sales.SalesPrice = salesDTO.SalesPrice;
 
                 // Calculate Sale Price from the product definition
                 Product product = new Product();
                 product = _salesTrackerContext.Products.Where(x => x.ProductId == sales.ProductId).FirstOrDefault();
 
                 // Calculate discount TODO
-                sales.SalePrice = product.SalePrice;
+                sales.SalesPrice = product.SalePrice;
 
                 SalesPerson SalesPerson = new SalesPerson();
                 SalesPerson = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == sales.SalesPersonId).FirstOrDefault();
                 // Calculate commission for the sales person
-                SalesPerson.Commission += Convert.ToDecimal(Convert.ToInt64(sales.SalePrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
+                SalesPerson.Commission += Convert.ToDecimal(Convert.ToInt64(sales.SalesPrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
 
                 // Reduce product quantity by 1
                 product.QtyOnHand -= 1;
@@ -74,8 +68,7 @@ namespace SalesTrackBusiness
                 salesDTONew.SalesPersonId = sales.SalesPersonId;
                 salesDTONew.ProductId = sales.ProductId;
                 salesDTONew.CustomerId = sales.CustomerId;
-                salesDTONew.SalesDate = sales.SalesDate;
-                salesDTONew.SalePrice = sales.SalePrice;
+                salesDTONew.SalesDate = sales.SalesDate; 
             }
             catch (Exception ex)
             {

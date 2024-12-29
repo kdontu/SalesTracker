@@ -28,8 +28,8 @@ namespace SalesTrackBusiness
                 new Product { ProductId = 9, Name = "Packa Genie Cargo", Manufacturer = "Blix", Description="Pack It All", Style="Touring", PurchasePrice=1600, SalePrice=2350, QtyOnHand=15, CommissionPercentage=30 });
 
             modelBuilder.Entity<SalesPerson>().HasData(
-                new SalesPerson { SalesPersonId = 1, FirstName = "Thomas", LastName = "Morgan", Address = "555 Brown Avenue, Sacramento, CA 94203", Phone = "123-345-1234", StartDate = new DateTime(2022,02,15), TerminationDate = null, Manager = "Mike Brown" },
-                new SalesPerson { SalesPersonId = 2, FirstName = "Jane", LastName = "Jackson", Address = "221 North Avenue, Atlanta, GA 30005", Phone = "443-123-5678", StartDate = new DateTime(2020, 09, 30), TerminationDate = null, Manager = "Mike Brown" });
+                new SalesPerson { SalesPersonId = 1, FirstName = "Thomas", LastName = "Morgan", Address = "555 Brown Avenue, Sacramento, CA 94203", Phone = "123-345-1234", StartDate = new DateTime(2022,02,15), TerminationDate = new DateTime(2024, 02, 15), Manager = "Mike Brown" },
+                new SalesPerson { SalesPersonId = 2, FirstName = "Jane", LastName = "Jackson", Address = "221 North Avenue, Atlanta, GA 30005", Phone = "443-123-5678", StartDate = new DateTime(2020, 09, 30), TerminationDate = new DateTime(2023, 09, 30), Manager = "Mike Brown" });
 
             modelBuilder.Entity<Discount>().HasData(
                 new Discount { DiscountId = 1, ProductId = 2, BeginDate = new DateTime(2024,1,1), EndDate = new DateTime(2024, 12, 31), DiscountPercentage = 20 },

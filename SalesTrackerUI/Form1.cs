@@ -1,5 +1,6 @@
 using SalesTrackData;
 using SalesTrackCommon.Entities;
+using SalesTrackBusiness.Entities;
 
 namespace SalesTracker
 {
@@ -32,7 +33,7 @@ namespace SalesTracker
         private void button2_Click(object sender, EventArgs e)
         {
             try
-            {             
+            {
                 ProductDTO product = new ProductDTO
                 {
                     ProductId = (int)dataGridViewProducts.CurrentRow.Cells["ProductId"].Value,
@@ -42,11 +43,61 @@ namespace SalesTracker
                     PurchasePrice = (string)dataGridViewProducts.CurrentRow.Cells["PurchasePrice"].Value,
                     SalePrice = (string)dataGridViewProducts.CurrentRow.Cells["SalePrice"].Value,
                     QtyOnHand = (string)dataGridViewProducts.CurrentRow.Cells["QtyOnHand"].Value,
-                    CommissionPercentage = (string)dataGridViewProducts.CurrentRow.Cells["CommissionPercentage"].Value               
+                    CommissionPercentage = (string)dataGridViewProducts.CurrentRow.Cells["CommissionPercentage"].Value
                 };
                 salesTrackBusiness.UpdateProduct(product);
                 products = salesTrackBusiness.GetProducts();
                 dataGridViewProducts.DataSource = products;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SalesPersonDTO salesPerson = new SalesPersonDTO
+                {
+                    SalesPersonId = Convert.ToInt32(this.dataGridViewSalesPersons.CurrentRow.Cells["SalesPersonId"].Value.ToString()),
+                    FirstName = this.dataGridViewSalesPersons.CurrentRow.Cells["FirstName"].Value.ToString(),
+                    LastName = this.dataGridViewSalesPersons.CurrentRow.Cells["LastName"].Value.ToString(),
+                    Address = this.dataGridViewSalesPersons.CurrentRow.Cells["Address"].Value.ToString(),
+                    Phone = this.dataGridViewSalesPersons.CurrentRow.Cells["Phone"].Value.ToString(),
+                    Manager = this.dataGridViewSalesPersons.CurrentRow.Cells["Manager"].Value.ToString(),
+                    TerminationDate = Convert.ToDateTime(this.dataGridViewSalesPersons.CurrentRow.Cells["TerminationDate"].Value.ToString()),
+                    StartDate = Convert.ToDateTime(this.dataGridViewSalesPersons.CurrentRow.Cells["StartDate"].Value.ToString()),
+                    Commission = Convert.ToDecimal(this.dataGridViewSalesPersons.CurrentRow.Cells["Commission"].Value.ToString())
+                };
+                salesTrackBusiness.UpdateSalesPerson(salesPerson);
+                var salesPersons = salesTrackBusiness.GetSalesPersons();
+                dataGridViewProducts.DataSource = salesPersons;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //need to work on this
+            try
+            {              
+                SalesDTO sale = new SalesDTO
+                {
+                    SalesId = Convert.ToInt32(this.dataGridViewSales.CurrentRow.Cells["SalesId"].Value.ToString()),
+                    ProductId = Convert.ToInt32(this.dataGridViewSales.CurrentRow.Cells["ProductId"].Value.ToString()),
+                    SalesPersonId = Convert.ToInt32(this.dataGridViewSales.CurrentRow.Cells["SalesPersonId"].Value.ToString()),
+                    CustomerId = Convert.ToInt32(this.dataGridViewSales.CurrentRow.Cells["CustomerId"].Value.ToString()),                  
+                    SalesDate = Convert.ToDateTime(this.dataGridViewSales.CurrentRow.Cells["SalesDate"].Value.ToString()),
+                    SalesPrice = Convert.ToDecimal(this.dataGridViewSales.CurrentRow.Cells["SalesPrice"].Value.ToString())
+                };
+                salesTrackBusiness.CreateSale(sale);
+                var sales = salesTrackBusiness.GetSales();
+                dataGridViewProducts.DataSource = sales;
             }
             catch (Exception ex)
             {
