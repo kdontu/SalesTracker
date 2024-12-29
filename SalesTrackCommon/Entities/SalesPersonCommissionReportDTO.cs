@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SalesTrackCommon.Entities
 {
-    public class SalesPersonCommissionReportDTO
+    public class SalesPersonCommissionReportDTO : BaseDTO
     {
     }
 }

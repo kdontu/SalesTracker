@@ -87,7 +87,7 @@ namespace SalesTracker
             //need to work on this
             try
             {
-                CreateSale sale = new CreateSale();
+                CreateSaleForm sale = new CreateSaleForm();
                 sale.salesTrackBusiness = salesTrackBusiness;
                 sale.Show();               
             }

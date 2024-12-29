@@ -47,17 +47,33 @@ namespace SalesTrackBusiness
                 // Calculate Sale Price from the product definition
                 Product product = new Product();
                 product = _salesTrackerContext.Products.Where(x => x.ProductId == sales.ProductId).FirstOrDefault();
+                if (product.QtyOnHand < 0)
+                {
+                    salesDTONew.ResponseMessage = string.Format("Product {0} is out of stock", product.Name );
+                    salesDTONew.HasErrors = true;
+                    return salesDTONew;
+                }
+                Discount discount = _salesTrackerContext.Discounts.Where(x => x.ProductId == product.ProductId).FirstOrDefault();
+                if ((discount != null) && (DateTime.Now.Date >= discount.BeginDate) && (DateTime.Now.Date <= discount.EndDate))
+                {
+                    sales.SalesPrice = product.SalePrice - product.SalePrice * discount.DiscountPercentage;
 
-                // Calculate discount TODO
-                sales.SalesPrice = product.SalePrice;
+                }
+                else
+                    sales.SalesPrice = product.SalePrice;
 
                 SalesPerson SalesPerson = new SalesPerson();
                 SalesPerson = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == sales.SalesPersonId).FirstOrDefault();
                 // Calculate commission for the sales person
                 SalesPerson.Commission += Convert.ToDecimal(Convert.ToInt64(sales.SalesPrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
 
+                _salesTrackerContext.Update(SalesPerson);
+                _salesTrackerContext.SaveChanges();
+
                 // Reduce product quantity by 1
                 product.QtyOnHand -= 1;
+                _salesTrackerContext.Update(product);
+                _salesTrackerContext.SaveChanges();
 
                 _salesTrackerContext.Sales.Add(sales);
                 _salesTrackerContext.SaveChanges();
@@ -72,10 +88,11 @@ namespace SalesTrackBusiness
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                salesDTONew.HasErrors = true;
+                salesDTONew.ResponseMessage = ex.Message;
+                return salesDTONew;
             }
-            return (salesDTONew);
+            return salesDTONew;
         }
     }
 }

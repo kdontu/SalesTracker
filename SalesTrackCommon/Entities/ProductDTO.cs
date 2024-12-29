@@ -8,7 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SalesTrackCommon.Entities
 {
-    public class ProductDTO
+    public class ProductDTO : BaseDTO
     {
         public ProductDTO() { }
 

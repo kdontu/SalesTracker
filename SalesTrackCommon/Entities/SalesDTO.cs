@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SalesTrackCommon.Entities
 {
-    public class SalesDTO
+    public class SalesDTO : BaseDTO
     {
         public int SalesId { get; set; }
         public int ProductId { get; set; }
