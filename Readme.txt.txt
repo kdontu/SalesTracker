@@ -6,7 +6,7 @@ Work in Progress: Create Sale backend logic is 70% complete. The create sale for
 
 I still need to write use cases, perform unit testing, add logging, exception handling, better error messages etc..
 Enhancements:
-It can also be done using MVC, web apis and async apis, use SOLID principles and dependency injection etc.. 
+It can also be done using MVC, web apis and async apis, develop azure services, use SOLID principles and dependency injection etc.. 
 But I did not have enough time to use all those technologies properly.
 
 I did not get time to work on the quarterly commission reports yet.
