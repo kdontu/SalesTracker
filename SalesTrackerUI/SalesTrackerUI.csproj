@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SalesTrackCommon\SalesTrackCommon.csproj" />
-    <ProjectReference Include="..\..\SalesTrackData\SalesTrackData.csproj" />
+    <ProjectReference Include="..\SalesTrackCommon\SalesTrackCommon.csproj" />
+    <ProjectReference Include="..\SalesTrackData\SalesTrackData.csproj" />
   </ItemGroup>
 
 </Project>
