@@ -1,6 +1,7 @@
 using SalesTrackData;
 using SalesTrackCommon.Entities;
 using SalesTrackBusiness.Entities;
+using SalesTrackerUI;
 
 namespace SalesTracker
 {
@@ -85,19 +86,10 @@ namespace SalesTracker
         {
             //need to work on this
             try
-            {              
-                SalesDTO sale = new SalesDTO
-                {
-                    SalesId = Convert.ToInt32(this.dataGridViewSales.CurrentRow.Cells["SalesId"].Value.ToString()),
-                    ProductId = Convert.ToInt32(this.dataGridViewSales.CurrentRow.Cells["ProductId"].Value.ToString()),
-                    SalesPersonId = Convert.ToInt32(this.dataGridViewSales.CurrentRow.Cells["SalesPersonId"].Value.ToString()),
-                    CustomerId = Convert.ToInt32(this.dataGridViewSales.CurrentRow.Cells["CustomerId"].Value.ToString()),                  
-                    SalesDate = Convert.ToDateTime(this.dataGridViewSales.CurrentRow.Cells["SalesDate"].Value.ToString()),
-                    SalesPrice = Convert.ToDecimal(this.dataGridViewSales.CurrentRow.Cells["SalesPrice"].Value.ToString())
-                };
-                salesTrackBusiness.CreateSale(sale);
-                var sales = salesTrackBusiness.GetSales();
-                dataGridViewProducts.DataSource = sales;
+            {
+                CreateSale sale = new CreateSale();
+                sale.salesTrackBusiness = salesTrackBusiness;
+                sale.Show();               
             }
             catch (Exception ex)
             {
