@@ -1,12 +1,12 @@
-﻿using SalesTrackCommon.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SalesTrackCommon.Models;
+using SalesTrackCommon.Models.Results;
+using SalesTrackBusiness.Interfaces;
+
 namespace SalesTrackBusiness.Interfaces
 {
     public interface ISalesManagement
     {
-        public List<SalesDTO> GetSales();
-        public SalesDTO CreateSales(SalesDTO sales);
+        GetSalesResult GetSales();
+        CreateSaleResult CreateSale(SalesDTO sales);
     }
 }

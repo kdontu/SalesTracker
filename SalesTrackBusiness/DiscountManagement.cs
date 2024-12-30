@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using SalesTrackBusiness.Entities;
 using SalesTrackBusiness.Interfaces;
 using SalesTrackCommon.Entities;
+using SalesTrackCommon.Models;
+using SalesTrackCommon.Models.Results;
 using SQLitePCL;
 
 namespace SalesTrackBusiness
@@ -13,12 +15,14 @@ namespace SalesTrackBusiness
     public class DiscountManagement : IDiscountManagement
     {
         private SalesTrackerContext _salesTrackerContext = new SalesTrackerContext();
-        public List<DiscountDTO> GetDiscounts()
+        public GetDiscountsResult GetDiscounts()
         {
-            List<DiscountDTO> discountDTOList = new List<DiscountDTO>();
-
+            GetDiscountsResult discountResult = new GetDiscountsResult();
+          
             try
             {
+                List<DiscountDTO> discountDTOList = new List<DiscountDTO>();
+
                 foreach (Discount discount in _salesTrackerContext.Discounts)
                 {
                     DiscountDTO discountDTO = new DiscountDTO();
@@ -29,16 +33,18 @@ namespace SalesTrackBusiness
                     discountDTO.DiscountPercentage = discount.DiscountPercentage;
                     discountDTOList.Add(discountDTO);
                 }
+                discountResult.Discounts = discountDTOList;
+                discountResult.ResponseMessage = "Discounts retrieved successfully";
+                discountResult.HasErrors = false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                discountResult.ResponseMessage = ex.Message;
+                discountResult.HasErrors = true;
+                return discountResult;
             }
-
-            return discountDTOList;
-        }
-      
+            return discountResult;
+        }        
     }
 }
 

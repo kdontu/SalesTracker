@@ -1,14 +1,9 @@
-﻿using SalesTrackCommon.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SalesTrackCommon.Models.Results;
 
 namespace SalesTrackBusiness.Interfaces
 {
     public interface IDiscountManagement
     {
-        List<DiscountDTO> GetDiscounts();
+        GetDiscountsResult GetDiscounts();
     }
 }

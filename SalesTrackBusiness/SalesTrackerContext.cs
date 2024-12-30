@@ -3,6 +3,7 @@
 namespace SalesTrackBusiness
 {
     using Microsoft.EntityFrameworkCore;
+    using System.Xml;
 
     public class SalesTrackerContext : DbContext
     {
@@ -16,6 +17,16 @@ namespace SalesTrackBusiness
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+           /*modelBuilder.Entity<Sales>(b =>
+            {
+                b.HasKey(e => e.SalesId);
+                b.Property(e => e.SalesId).ValueGeneratedOnAdd();
+            });*/
+           
+           /* modelBuilder.Entity<Sales>()
+            .Property(b => b.SalesId)
+            .HasDefaultValueSql("NEWID()");
+           */
             modelBuilder.Entity<Product>().HasData(
                 new Product { ProductId = 1, Name = "City E Bike", Manufacturer = "Cikada", Description="Urban Cruising Bike", Style="Commuter", PurchasePrice=1100, SalePrice=1599, QtyOnHand=24, CommissionPercentage=12 },
                 new Product { ProductId = 2, Name = "Touring E Bike", Manufacturer = "Cikada", Description="Long Distance Touring Bike", Style="Touring", PurchasePrice=1350, SalePrice=1999, QtyOnHand=15, CommissionPercentage=20 },
@@ -40,8 +51,8 @@ namespace SalesTrackBusiness
                 new Customer { CustomerId = 2, FirstName = "Tiffany", LastName = "Lime", Address = "999 South Parson Rd, Duluth, GA 30022", Phone = "443-123-5678", StartDate = new DateTime(2024,2,19) });
 
             modelBuilder.Entity<Sales>().HasData(
-                new Sales { SalesId = 1, ProductId = 3, SalesDate = new DateTime(2024, 12, 28), CustomerId = 1, SalesPersonId = 2 },
-                new Sales { SalesId = 2, ProductId = 2, SalesDate = new DateTime(2024, 03, 15), CustomerId = 2, SalesPersonId = 1 });
+                new Sales {SalesId=1, ProductId=5, SalesDate = new DateTime(2024, 12, 28), CustomerId = 1, SalesPersonId = 2 },
+                new Sales {SalesId=2, ProductId=6, SalesDate = new DateTime(2024, 03, 15), CustomerId = 2, SalesPersonId = 1 });           
         }
     }
 }

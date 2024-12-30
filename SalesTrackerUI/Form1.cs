@@ -1,7 +1,8 @@
 using SalesTrackData;
-using SalesTrackCommon.Entities;
+using SalesTrackCommon.Models;
 using SalesTrackBusiness.Entities;
 using SalesTrackerUI;
+using SalesTrackCommon.Models.Results;
 
 namespace SalesTracker
 {
@@ -18,12 +19,7 @@ namespace SalesTracker
         {
             salesTrackBusiness = new SalesTrackUIService();
             salesTrackBusiness.Initialize();
-            products = salesTrackBusiness.GetProducts();
-            dataGridViewProducts.DataSource = products;
-            dataGridViewCustomer.DataSource = salesTrackBusiness.GetCustomers();
-            dataGridViewSales.DataSource = salesTrackBusiness.GetSales();
-            dataGridViewSalesPersons.DataSource = salesTrackBusiness.GetSalesPersons();
-            dataGridView2.DataSource = salesTrackBusiness.GetDiscounts();
+            RefreshDataGrid();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -31,7 +27,7 @@ namespace SalesTracker
             salesTrackBusiness.UnInitialize();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void UpdateProduct_Click(object sender, EventArgs e)
         {
             try
             {
@@ -46,9 +42,22 @@ namespace SalesTracker
                     QtyOnHand = (string)dataGridViewProducts.CurrentRow.Cells["QtyOnHand"].Value,
                     CommissionPercentage = (string)dataGridViewProducts.CurrentRow.Cells["CommissionPercentage"].Value
                 };
-                salesTrackBusiness.UpdateProduct(product);
-                products = salesTrackBusiness.GetProducts();
-                dataGridViewProducts.DataSource = products;
+                UpdateProductResult updateProductResult = salesTrackBusiness.UpdateProduct(product);
+                if (!updateProductResult.HasErrors)
+                {
+                    GetProductsResult productsResult = salesTrackBusiness.GetProducts();
+                    if (!productsResult.HasErrors)
+                        dataGridViewProducts.DataSource = products;
+                    else
+                    {
+                        MessageBox.Show(productsResult.ResponseMessage);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(updateProductResult.ResponseMessage);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -56,7 +65,7 @@ namespace SalesTracker
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void UpdateSalesPerson_Click(object sender, EventArgs e)
         {
             try
             {
@@ -72,9 +81,21 @@ namespace SalesTracker
                     StartDate = Convert.ToDateTime(this.dataGridViewSalesPersons.CurrentRow.Cells["StartDate"].Value.ToString()),
                     Commission = Convert.ToDecimal(this.dataGridViewSalesPersons.CurrentRow.Cells["Commission"].Value.ToString())
                 };
-                salesTrackBusiness.UpdateSalesPerson(salesPerson);
-                var salesPersons = salesTrackBusiness.GetSalesPersons();
-                dataGridViewProducts.DataSource = salesPersons;
+                UpdateSalesPersonResult updateSalesPerson = salesTrackBusiness.UpdateSalesPerson(salesPerson);
+                if (!updateSalesPerson.HasErrors)
+                {
+                    GetSalesPersonsResult salesPersonsResult = salesTrackBusiness.GetSalesPersons();
+                    if (!salesPersonsResult.HasErrors)
+                        dataGridViewSalesPersons.DataSource = salesPersonsResult.SalesPersons;
+                    else
+                    {
+                        MessageBox.Show(salesPersonsResult.ResponseMessage);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(updateSalesPerson.ResponseMessage);
+                }            
             }
             catch (Exception ex)
             {
@@ -82,18 +103,63 @@ namespace SalesTracker
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void CreateSale_Click(object sender, EventArgs e)
         {
             //need to work on this
             try
             {
-                CreateSaleForm sale = new CreateSaleForm();
+                CreateSaleForm sale = new CreateSaleForm(this);
                 sale.salesTrackBusiness = salesTrackBusiness;
-                sale.Show();               
+                sale.Show();       
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            
+        }
+        public void RefreshDataGrid()
+        {
+            GetProductsResult productsResult = salesTrackBusiness.GetProducts();
+            if (!productsResult.HasErrors)
+            {
+                products = productsResult.Products;
+                dataGridViewProducts.DataSource = products;
+            }
+            else
+            {
+                MessageBox.Show(productsResult.ResponseMessage);
+            }
+            GetCustomersResult customersResult = salesTrackBusiness.GetCustomers();
+            if (!customersResult.HasErrors)
+            {
+                dataGridViewCustomer.DataSource = customersResult.Customers;
+            }
+            else
+            {
+                MessageBox.Show(customersResult.ResponseMessage);
+            }
+            GetSalesResult getSalesResult = salesTrackBusiness.GetSales();
+            if (!getSalesResult.HasErrors)
+                dataGridViewSales.DataSource = getSalesResult.Sales;
+            else
+            {
+                MessageBox.Show(getSalesResult.ResponseMessage);
+            }
+            GetSalesPersonsResult salesPersonsResult = salesTrackBusiness.GetSalesPersons();
+            if (!salesPersonsResult.HasErrors)
+                dataGridViewSalesPersons.DataSource = salesPersonsResult.SalesPersons;
+            else
+            {
+                MessageBox.Show(salesPersonsResult.ResponseMessage);
+            }
+
+            GetDiscountsResult discountsResult = salesTrackBusiness.GetDiscounts();
+            if (!discountsResult.HasErrors)
+                dataGridView2.DataSource = discountsResult.Discounts;
+            else
+            {
+                MessageBox.Show(discountsResult.ResponseMessage);
             }
         }
     }

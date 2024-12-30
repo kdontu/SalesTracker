@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SalesTrackBusiness.Entities;
+﻿using SalesTrackBusiness.Entities;
 using SalesTrackBusiness.Interfaces;
-using SalesTrackCommon.Entities;
+using SalesTrackCommon.Models;
+using SalesTrackCommon.Models.Results;
 
 namespace SalesTrackBusiness
 {
@@ -13,29 +9,35 @@ namespace SalesTrackBusiness
     {
         private SalesTrackerContext _salesTrackerContext = new SalesTrackerContext();
 
-        public List<CustomerDTO> GetCustomers()
+        public GetCustomersResult GetCustomers()
         {
-            List<CustomerDTO> customerDTOList = new List<CustomerDTO>();
-
+            GetCustomersResult customersResult = new GetCustomersResult();
             try
             {
+                List<CustomerDTO> customerDTOList = new List<CustomerDTO>();
+
                 foreach (Customer customer in _salesTrackerContext.Customers)
                 {
                     CustomerDTO customerDTO = new CustomerDTO();
+                    customerDTO.CustomerId = customer.CustomerId;
                     customerDTO.FirstName = customer.FirstName;
                     customerDTO.LastName = customer.LastName;
                     customerDTO.Phone = customer.Phone;
                     customerDTO.Address = customer.Address;
                     customerDTOList.Add(customerDTO);
                 }
+                customersResult.Customers = customerDTOList;
+                customersResult.ResponseMessage = "Success";
+                customersResult.HasErrors = false;
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                customersResult.ResponseMessage = ex.Message;
+                customersResult.HasErrors = true;
+                return customersResult;
             }
-
-            return customerDTOList;
+            return customersResult;
         }
     }
 }

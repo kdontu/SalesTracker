@@ -2,6 +2,8 @@
 using SalesTrackBusiness;
 using SalesTrackCommon.Entities;
 using SalesTrackBusiness.Interfaces;
+using SalesTrackCommon.Models;
+using SalesTrackCommon.Models.Results;
 
 namespace SalesTrackData
 {
@@ -13,11 +15,9 @@ namespace SalesTrackData
         private readonly ISalesManagement _salesManagement = new SalesManagement();
         private readonly ISalesPersonManagement _salesPersonManagement = new SalesPersonManagement();
         private readonly IDiscountManagement _discountManagement = new DiscountManagement();
-
         public SalesTrackUIService()
         {           
         }
-
         public void Initialize()
         {
             _dbManagement.InitializeDb();
@@ -26,42 +26,42 @@ namespace SalesTrackData
         {
             _dbManagement.UnInitializeDb();
         }
-        public List<SalesPersonDTO> GetSalesPersons()
+        public GetSalesPersonsResult GetSalesPersons()
         {
             return _salesPersonManagement.GetSalesPersons();
         }
-        public SalesPersonDTO UpdateSalesPerson(SalesPersonDTO salesPerson)
+        public UpdateSalesPersonResult UpdateSalesPerson(SalesPersonDTO salesPerson)
         {
             return _salesPersonManagement.UpdateSalesPerson(salesPerson);
         }
 
-        public List<ProductDTO> GetProducts()
+        public GetProductsResult GetProducts()
         {
             return _productsManagement.GetProducts();
         }
-        public ProductDTO UpdateProduct(ProductDTO salesPerson)
+        public UpdateProductResult UpdateProduct(ProductDTO salesPerson)
         {
             return _productsManagement.UpdateProduct(salesPerson);
         }
 
-        public List<SalesDTO> GetSales()
+        public GetSalesResult GetSales()
         {
             return _salesManagement.GetSales();
         }
 
-        public SalesDTO CreateSale(SalesDTO salesPerson)
+        public CreateSaleResult CreateSale(SalesDTO salesPerson)
         {
-            return _salesManagement.CreateSales(salesPerson);
+            return _salesManagement.CreateSale(salesPerson);
         }
-        public List<CustomerDTO> GetCustomers()
+        public GetCustomersResult GetCustomers()
         {
             return _customerManagement.GetCustomers();
         }
-        public List<DiscountDTO> GetDiscounts()
+        public GetDiscountsResult GetDiscounts()
         {
             return _discountManagement.GetDiscounts();
         }
-        public List<SalesPersonCommissionReportDTO> GetSalesPersonCommissionReport()
+        public GetSalesPersonCommissionReportResult GetSalesPersonCommissionReport()
         {
             throw new System.NotImplementedException();
         }

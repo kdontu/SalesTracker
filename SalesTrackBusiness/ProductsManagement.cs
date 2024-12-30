@@ -1,25 +1,23 @@
-﻿using SalesTrackCommon.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SalesTrackBusiness.Interfaces;
+﻿using SalesTrackCommon.Models;
+using SalesTrackCommon.Models.Results;
 using SalesTrackBusiness.Entities;
-using Microsoft.EntityFrameworkCore;
-
+using SalesTrackCommon.Models;
+using SalesTrackCommon.Models.Results;
+using SalesTrackBusiness.Interfaces;
 
 namespace SalesTrackBusiness
 {
     public class ProductsManagement : IProductsManagement
     {
         private SalesTrackerContext _salesTrackerContext = new SalesTrackerContext();
-        public List<ProductDTO> GetProducts()
+        public GetProductsResult GetProducts()
         {
-            List<ProductDTO> productDTOList = new List<ProductDTO>();
-
+            GetProductsResult getProductsResult = new GetProductsResult();       
+            
             try
-            {                     
+            {
+                List<ProductDTO> productDTOList = new List<ProductDTO>();
+
                 foreach (Product prod in _salesTrackerContext.Products)
                 {
                     ProductDTO productDTO = new ProductDTO();
@@ -34,20 +32,26 @@ namespace SalesTrackBusiness
                     productDTO.Style = prod.Style;
                     productDTOList.Add(productDTO);
                 }
+                getProductsResult.Products = productDTOList;
+                getProductsResult.ResponseMessage = "Prodcutss retrieved successfully";
+                getProductsResult.HasErrors = false;
             }             
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                getProductsResult.ResponseMessage = ex.Message;
+                getProductsResult.HasErrors =  true;
             }
 
-            return productDTOList;
+            return getProductsResult;               
         }
-        public ProductDTO UpdateProduct(ProductDTO productDTO)
+        public UpdateProductResult UpdateProduct(ProductDTO productDTO)
         {
-            ProductDTO productDTOChanged = new ProductDTO();
+            UpdateProductResult updateProductResult = new UpdateProductResult();
+ 
             try
             {
+                ProductDTO productDTOChanged = new ProductDTO();
+
                 var productToChange = _salesTrackerContext.Products.Where(x => x.ProductId == productDTO.ProductId).FirstOrDefault();
                 //productToChange.ProductId = productDTO.ProductId;
                 productToChange.Name = productDTO.Name;
@@ -76,13 +80,19 @@ namespace SalesTrackBusiness
                 productDTOChanged.QtyOnHand = productChanged.QtyOnHand.ToString();
                 productDTOChanged.Style = productChanged.Style;
                 productDTOChanged.Description = productChanged.Description;
+
+                updateProductResult.Product = productDTOChanged;
+                updateProductResult.ResponseMessage = "Updated Prodcut successfully!";
+                updateProductResult.HasErrors = false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                updateProductResult.HasErrors = true;
+                updateProductResult.ResponseMessage = ex.Message;
+                return updateProductResult;
             }
-            return productDTOChanged;
+
+            return updateProductResult;
         }
     }
 }

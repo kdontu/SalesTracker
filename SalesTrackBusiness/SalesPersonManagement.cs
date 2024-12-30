@@ -1,18 +1,22 @@
 ﻿using SalesTrackBusiness.Entities;
 using SalesTrackBusiness.Interfaces;
-using SalesTrackCommon.Entities;
+using SalesTrackCommon.Models;
+using SalesTrackCommon.Models.Results;
+
 
 namespace SalesTrackBusiness
 {
     public class SalesPersonManagement : ISalesPersonManagement
     {
         private SalesTrackerContext _salesTrackerContext = new SalesTrackerContext();
-        public List<SalesPersonDTO> GetSalesPersons()
+        public GetSalesPersonsResult GetSalesPersons()
         {
-            List<SalesPersonDTO> salesPersonDTOList = new List<SalesPersonDTO>();
-
+            GetSalesPersonsResult getSalesPersonsResult = new GetSalesPersonsResult();
+          
             try
             {
+                List<SalesPersonDTO> salesPersonDTOList = new List<SalesPersonDTO>();
+
                 foreach (SalesPerson salesPerson in _salesTrackerContext.SalesPersons)
                 {
                     SalesPersonDTO salesPersonDTO = new SalesPersonDTO();
@@ -27,21 +31,28 @@ namespace SalesTrackBusiness
                     salesPersonDTO.Commission = salesPerson.Commission;
                     salesPersonDTOList.Add(salesPersonDTO);
                 }
+                getSalesPersonsResult.SalesPersons = salesPersonDTOList;
+                getSalesPersonsResult.ResponseMessage = "Sales Persons retrieved successfully";
+                getSalesPersonsResult.HasErrors = false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                getSalesPersonsResult.ResponseMessage = ex.Message;
+                getSalesPersonsResult.HasErrors = true;
+                return getSalesPersonsResult;
             }
 
-            return salesPersonDTOList;
+            return getSalesPersonsResult;
         }
 
-        public SalesPersonDTO UpdateSalesPerson(SalesPersonDTO salesDTOPerson)
+        public UpdateSalesPersonResult UpdateSalesPerson(SalesPersonDTO salesDTOPerson)
         {
-            SalesPersonDTO salesPersonDTOChanged = new SalesPersonDTO();
+            UpdateSalesPersonResult updateSalesPersonResult = new UpdateSalesPersonResult();
+            
             try
             {
+                SalesPersonDTO salesPersonDTOChanged = new SalesPersonDTO();
+
                 SalesPerson salesPerson = new SalesPerson();
                 salesPerson.SalesPersonId = salesDTOPerson.SalesPersonId;
                 salesPerson.FirstName = salesDTOPerson.FirstName;
@@ -69,14 +80,17 @@ namespace SalesTrackBusiness
                 salesPersonDTOChanged.Commission = salesPersonChanged.Commission;
                 salesPersonDTOChanged.StartDate = salesPersonChanged.StartDate;
 
-
+                updateSalesPersonResult.SalesPerson = salesPersonDTOChanged;
+                updateSalesPersonResult.ResponseMessage = "Sales Person updated successfully";
+                updateSalesPersonResult.HasErrors = false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                updateSalesPersonResult.ResponseMessage = ex.Message;
+                updateSalesPersonResult.HasErrors = true;
+                return updateSalesPersonResult;
             }
-            return salesPersonDTOChanged;
+            return updateSalesPersonResult;
         }
 
     }

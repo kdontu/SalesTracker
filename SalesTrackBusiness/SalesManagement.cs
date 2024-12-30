@@ -1,21 +1,25 @@
 ﻿using SalesTrackBusiness.Entities;
 using SalesTrackBusiness.Interfaces;
-using SalesTrackCommon.Entities;
+using SalesTrackCommon.Models;
+using SalesTrackCommon.Models.Results;
 
 namespace SalesTrackBusiness
 {
     public class SalesManagement : ISalesManagement
     {
         private SalesTrackerContext _salesTrackerContext = new SalesTrackerContext();
-        public List<SalesDTO> GetSales()
+        public GetSalesResult GetSales()
         {
-            List<SalesDTO> salesDTOList = new List<SalesDTO>();
+            GetSalesResult getSalesResult = new GetSalesResult();
 
             try
             {
+                List<SalesDTO> salesDTOList = new List<SalesDTO>();
+
                 foreach (Sales sales in _salesTrackerContext.Sales)
                 {
                     SalesDTO salesDTO = new SalesDTO();
+                    salesDTO.SalesId = sales.SalesId;
                     salesDTO.SalesPersonId = sales.SalesPersonId;
                     salesDTO.ProductId = sales.ProductId;
                     salesDTO.CustomerId = sales.CustomerId;
@@ -23,76 +27,84 @@ namespace SalesTrackBusiness
                     salesDTO.SalesPrice = sales.SalesPrice;
                     salesDTOList.Add(salesDTO);
                 }
+                getSalesResult.Sales = salesDTOList;
+                getSalesResult.ResponseMessage = "Sales retrieved successfully";
+                getSalesResult.HasErrors = false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return null;
+                getSalesResult.ResponseMessage = ex.Message;
+                getSalesResult.HasErrors = false;
+                return getSalesResult;
             }
 
-            return salesDTOList;
+            return getSalesResult;
         }
-        public SalesDTO CreateSales(SalesDTO salesDTO)
+        public CreateSaleResult CreateSale(SalesDTO salesDTO)
         {
-            var salesDTONew = new SalesDTO();
-            try
-            { 
-                Sales sales = new Sales();
-                sales.SalesPersonId = salesDTO.SalesPersonId;
-                sales.ProductId = salesDTO.ProductId;
-                sales.CustomerId = salesDTO.CustomerId;
-                sales.SalesDate = salesDTO.SalesDate;
-                sales.SalesPrice = salesDTO.SalesPrice;
+            CreateSaleResult createSaleResult = new CreateSaleResult();
 
+            try
+            {
+                var salesDTONew = new SalesDTO();
+
+                Sales saleObj = new Sales();
+
+                saleObj.SalesPersonId = salesDTO.SalesPersonId;
+                saleObj.ProductId = salesDTO.ProductId;
+                saleObj.CustomerId = salesDTO.CustomerId;
+                saleObj.SalesDate = salesDTO.SalesDate;
+                
                 // Calculate Sale Price from the product definition
                 Product product = new Product();
-                product = _salesTrackerContext.Products.Where(x => x.ProductId == sales.ProductId).FirstOrDefault();
-                if (product.QtyOnHand < 0)
+                product = _salesTrackerContext.Products.Where(x => x.ProductId == saleObj.ProductId).FirstOrDefault();
+                if ((product != null) && (product.QtyOnHand < 0))
                 {
-                    salesDTONew.ResponseMessage = string.Format("Product {0} is out of stock", product.Name );
-                    salesDTONew.HasErrors = true;
-                    return salesDTONew;
+                    createSaleResult.ResponseMessage = string.Format("Product {0} is out of stock", product.Name );
+                    createSaleResult.HasErrors = true;
+                    return createSaleResult;
                 }
                 Discount discount = _salesTrackerContext.Discounts.Where(x => x.ProductId == product.ProductId).FirstOrDefault();
                 if ((discount != null) && (DateTime.Now.Date >= discount.BeginDate) && (DateTime.Now.Date <= discount.EndDate))
                 {
-                    sales.SalesPrice = product.SalePrice - product.SalePrice * discount.DiscountPercentage;
+                    saleObj.SalesPrice = product.SalePrice - product.SalePrice * discount.DiscountPercentage;
 
                 }
                 else
-                    sales.SalesPrice = product.SalePrice;
+                    saleObj.SalesPrice = product.SalePrice;
 
                 SalesPerson SalesPerson = new SalesPerson();
-                SalesPerson = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == sales.SalesPersonId).FirstOrDefault();
+                SalesPerson = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == saleObj.SalesPersonId).FirstOrDefault();
                 // Calculate commission for the sales person
-                SalesPerson.Commission += Convert.ToDecimal(Convert.ToInt64(sales.SalesPrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
+                SalesPerson.Commission += Convert.ToDecimal(Convert.ToInt64(saleObj.SalesPrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
 
                 _salesTrackerContext.Update(SalesPerson);
-                _salesTrackerContext.SaveChanges();
+                //_salesTrackerContext.SaveChanges();
 
                 // Reduce product quantity by 1
                 product.QtyOnHand -= 1;
                 _salesTrackerContext.Update(product);
+                //_salesTrackerContext.SaveChanges();
+
+                _salesTrackerContext.Sales.Add(saleObj);
                 _salesTrackerContext.SaveChanges();
 
-                _salesTrackerContext.Sales.Add(sales);
-                _salesTrackerContext.SaveChanges();
+                saleObj = _salesTrackerContext.Sales.Where(x => x.ProductId == saleObj.ProductId).FirstOrDefault();
 
-                sales = _salesTrackerContext.Sales.Where(x => x.SalesId == sales.SalesId).FirstOrDefault();
-
-                salesDTONew.SalesId = sales.SalesId;
-                salesDTONew.SalesPersonId = sales.SalesPersonId;
-                salesDTONew.ProductId = sales.ProductId;
-                salesDTONew.CustomerId = sales.CustomerId;
-                salesDTONew.SalesDate = sales.SalesDate; 
+                salesDTONew.SalesId = saleObj.SalesId;
+                salesDTONew.SalesPersonId = saleObj.SalesPersonId;
+                salesDTONew.ProductId = saleObj.ProductId;
+                salesDTONew.CustomerId = saleObj.CustomerId;
+                salesDTONew.SalesDate = saleObj.SalesDate;
+                salesDTONew.SalesPrice = saleObj.SalesPrice;
             }
             catch (Exception ex)
             {
-                salesDTONew.HasErrors = true;
-                salesDTONew.ResponseMessage = ex.Message;
-                return salesDTONew;
+                createSaleResult.ResponseMessage = string.Format("Product {0} is out of stock", salesDTO.ProductId);
+                createSaleResult.HasErrors = true;
+                return createSaleResult;
             }
-            return salesDTONew;
+            return createSaleResult;
         }
     }
 }

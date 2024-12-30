@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SalesTrackBusiness.Entities
 {
     //-Product, Salesperson, Customer, Sales Date
     public class Sales
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int SalesId { get; set; }
         public int ProductId { get; set; }
         public int SalesPersonId { get; set; }
