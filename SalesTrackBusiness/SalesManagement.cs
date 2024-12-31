@@ -25,6 +25,7 @@ namespace SalesTrackBusiness
                     salesDTO.CustomerId = sales.CustomerId;
                     salesDTO.SalesDate = sales.SalesDate;
                     salesDTO.SalesPrice = sales.SalesPrice;
+                    salesDTO.Commission = sales.Commission;
                     salesDTOList.Add(salesDTO);
                 }
                 getSalesResult.Sales = salesDTOList;
@@ -75,17 +76,18 @@ namespace SalesTrackBusiness
 
                 SalesPerson SalesPerson = new SalesPerson();
                 SalesPerson = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == saleObj.SalesPersonId).FirstOrDefault();
+
                 // Calculate commission for the sales person
-                SalesPerson.Commission += Convert.ToDecimal(Convert.ToInt64(saleObj.SalesPrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
-
+                Decimal commission = Convert.ToDecimal(Convert.ToInt64(saleObj.SalesPrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
+                SalesPerson.Commission += commission;
+                saleObj.Commission = commission;
+              
                 _salesTrackerContext.Update(SalesPerson);
-                //_salesTrackerContext.SaveChanges();
-
+               
                 // Reduce product quantity by 1
                 product.QtyOnHand -= 1;
                 _salesTrackerContext.Update(product);
-                //_salesTrackerContext.SaveChanges();
-
+               
                 _salesTrackerContext.Sales.Add(saleObj);
                 _salesTrackerContext.SaveChanges();
 
@@ -97,6 +99,7 @@ namespace SalesTrackBusiness
                 salesDTONew.CustomerId = saleObj.CustomerId;
                 salesDTONew.SalesDate = saleObj.SalesDate;
                 salesDTONew.SalesPrice = saleObj.SalesPrice;
+                salesDTONew.Commission = saleObj.Commission;
             }
             catch (Exception ex)
             {

@@ -15,5 +15,6 @@ namespace SalesTrackBusiness.Entities
         public int CustomerId { get; set; }
         public DateTime SalesDate { get; set; }
         public decimal SalesPrice { get; set;}
+        public decimal Commission { get; set; }
     }
 }

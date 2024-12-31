@@ -57,7 +57,7 @@ namespace SalesTracker
                 {
                     MessageBox.Show(updateProductResult.ResponseMessage);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -95,7 +95,7 @@ namespace SalesTracker
                 else
                 {
                     MessageBox.Show(updateSalesPerson.ResponseMessage);
-                }            
+                }
             }
             catch (Exception ex)
             {
@@ -105,18 +105,17 @@ namespace SalesTracker
 
         private void CreateSale_Click(object sender, EventArgs e)
         {
-            //need to work on this
             try
             {
                 CreateSaleForm sale = new CreateSaleForm(this);
                 sale.salesTrackBusiness = salesTrackBusiness;
-                sale.Show();       
+                sale.Show();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
         public void RefreshDataGrid()
         {
@@ -161,6 +160,11 @@ namespace SalesTracker
             {
                 MessageBox.Show(discountsResult.ResponseMessage);
             }
+        }
+
+        private void btGenerate_Report_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
