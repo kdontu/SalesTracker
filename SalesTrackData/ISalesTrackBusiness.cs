@@ -16,6 +16,6 @@ namespace SalesTrackData
         CreateSaleResult CreateSale(SalesDTO salesPerson);
         GetCustomersResult GetCustomers();
         GetDiscountsResult GetDiscounts();
-        GetSalesPersonCommissionReportResult GetSalesPersonCommissionReport();
+        GetSalesPersonCommissionReportResult GetSalesPersonCommissionReport(DateTime quarterStart, DateTime quarterEnd);
     }
 }

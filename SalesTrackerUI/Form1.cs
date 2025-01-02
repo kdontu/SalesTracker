@@ -107,7 +107,7 @@ namespace SalesTracker
         {
             try
             {
-                CreateSaleForm sale = new CreateSaleForm(this);
+                CreateSaleForm sale = new CreateSaleForm(this, salesTrackBusiness);
                 sale.salesTrackBusiness = salesTrackBusiness;
                 sale.Show();
             }
@@ -160,10 +160,53 @@ namespace SalesTracker
             {
                 MessageBox.Show(discountsResult.ResponseMessage);
             }
+            if (!salesPersonsResult.HasErrors)
+                comboBox_SalesPersons.DataSource = salesPersonsResult.SalesPersons;
+            else
+            {
+                MessageBox.Show(salesPersonsResult.ResponseMessage);
+            }
+        
+            comboBoxYear.DataSource = Enumerable.Range(1950, DateTime.UtcNow.Year - 1949).Reverse().ToList();
         }
 
         private void btGenerate_Report_Click(object sender, EventArgs e)
         {
+            try
+            {
+                GetSalesPersonCommissionReportResult result = new GetSalesPersonCommissionReportResult();
+                
+                switch (comboBoxQuarter.SelectedIndex)
+                {
+                    case 0:
+                        result = salesTrackBusiness.GetSalesPersonCommissionReport(new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 1, 1), new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 3, 31));
+                        break;
+                    case 1:
+                        result = salesTrackBusiness.GetSalesPersonCommissionReport(new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 4, 1), new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 6, 30));
+                        break;
+                    case 2:
+                        result = salesTrackBusiness.GetSalesPersonCommissionReport(new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 7, 1), new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 9, 30));
+                        break;
+                    case 3:
+                        result = salesTrackBusiness.GetSalesPersonCommissionReport(new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 10, 1), new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 12, 31));
+                        break;
+
+                }   
+                if(!result.HasErrors)
+                {
+                    GenerateCommissionReportForm commissionForm = new GenerateCommissionReportForm(salesTrackBusiness, result.salesPersonCommissionReport);
+                    commissionForm.SalesTrackBusiness = salesTrackBusiness;
+                    commissionForm.Show();
+                }
+                else
+                {
+                    MessageBox.Show(result.ResponseMessage);
+                }              
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
     }

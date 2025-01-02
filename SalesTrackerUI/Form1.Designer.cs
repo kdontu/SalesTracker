@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             tabCommisionReport = new TabPage();
-            comboBox2 = new ComboBox();
+            buttonGenerate_Report = new Button();
+            comboBoxYear = new ComboBox();
             label1 = new Label();
-            comboBox1 = new ComboBox();
+            comboBoxQuarter = new ComboBox();
             label3 = new Label();
             comboBox_SalesPersons = new ComboBox();
             tabSales = new TabPage();
@@ -49,7 +50,6 @@
             tabDiscount = new TabPage();
             dataGridView2 = new DataGridView();
             tabPage1 = new TabPage();
-            buttonGenerate_Report = new Button();
             tabCommisionReport.SuspendLayout();
             tabSales.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSales).BeginInit();
@@ -67,9 +67,9 @@
             // tabCommisionReport
             // 
             tabCommisionReport.Controls.Add(buttonGenerate_Report);
-            tabCommisionReport.Controls.Add(comboBox2);
+            tabCommisionReport.Controls.Add(comboBoxYear);
             tabCommisionReport.Controls.Add(label1);
-            tabCommisionReport.Controls.Add(comboBox1);
+            tabCommisionReport.Controls.Add(comboBoxQuarter);
             tabCommisionReport.Controls.Add(label3);
             tabCommisionReport.Controls.Add(comboBox_SalesPersons);
             tabCommisionReport.Location = new Point(12, 69);
@@ -79,13 +79,24 @@
             tabCommisionReport.Text = "Commission Report";
             tabCommisionReport.UseVisualStyleBackColor = true;
             // 
-            // comboBox2
+            // buttonGenerate_Report
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(458, 143);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(281, 56);
-            comboBox2.TabIndex = 19;
+            buttonGenerate_Report.FlatStyle = FlatStyle.Flat;
+            buttonGenerate_Report.Location = new Point(444, 232);
+            buttonGenerate_Report.Name = "buttonGenerate_Report";
+            buttonGenerate_Report.Size = new Size(295, 69);
+            buttonGenerate_Report.TabIndex = 20;
+            buttonGenerate_Report.Text = "Generate Report";
+            buttonGenerate_Report.UseVisualStyleBackColor = true;
+            buttonGenerate_Report.Click += btGenerate_Report_Click;
+            // 
+            // comboBoxYear
+            // 
+            comboBoxYear.FormattingEnabled = true;
+            comboBoxYear.Location = new Point(458, 143);
+            comboBoxYear.Name = "comboBoxYear";
+            comboBoxYear.Size = new Size(281, 56);
+            comboBoxYear.TabIndex = 19;
             // 
             // label1
             // 
@@ -97,13 +108,14 @@
             label1.Text = "Quarter:";
             label1.TextAlign = ContentAlignment.TopRight;
             // 
-            // comboBox1
+            // comboBoxQuarter
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(275, 143);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(157, 56);
-            comboBox1.TabIndex = 17;
+            comboBoxQuarter.FormattingEnabled = true;
+            comboBoxQuarter.Items.AddRange(new object[] { "Quarter1", "Quarter2", "Quarter3", "Quarter4" });
+            comboBoxQuarter.Location = new Point(275, 143);
+            comboBoxQuarter.Name = "comboBoxQuarter";
+            comboBoxQuarter.Size = new Size(157, 56);
+            comboBoxQuarter.TabIndex = 17;
             // 
             // label3
             // 
@@ -120,7 +132,7 @@
             comboBox_SalesPersons.FormattingEnabled = true;
             comboBox_SalesPersons.Location = new Point(275, 44);
             comboBox_SalesPersons.Name = "comboBox_SalesPersons";
-            comboBox_SalesPersons.Size = new Size(475, 56);
+            comboBox_SalesPersons.Size = new Size(464, 56);
             comboBox_SalesPersons.TabIndex = 15;
             // 
             // tabSales
@@ -282,17 +294,6 @@
             tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // buttonGenerate_Report
-            // 
-            buttonGenerate_Report.FlatStyle = FlatStyle.Flat;
-            buttonGenerate_Report.Location = new Point(444, 232);
-            buttonGenerate_Report.Name = "buttonGenerate_Report";
-            buttonGenerate_Report.Size = new Size(295, 69);
-            buttonGenerate_Report.TabIndex = 20;
-            buttonGenerate_Report.Text = "Generate Report";
-            buttonGenerate_Report.UseVisualStyleBackColor = true;
-            buttonGenerate_Report.Click += btGenerate_Report_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(20F, 48F);
@@ -338,9 +339,9 @@
         private Button button1;
         private DataGridViewTextBoxColumn ProdcutName;
         private TabPage tabPage1;
-        private ComboBox comboBox2;
+        private ComboBox comboBoxYear;
         private Label label1;
-        private ComboBox comboBox1;
+        private ComboBox comboBoxQuarter;
         private Label label3;
         private ComboBox comboBox_SalesPersons;
         private Button buttonGenerate_Report;

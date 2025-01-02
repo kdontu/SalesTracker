@@ -15,6 +15,7 @@ namespace SalesTrackData
         private readonly ISalesManagement _salesManagement = new SalesManagement();
         private readonly ISalesPersonManagement _salesPersonManagement = new SalesPersonManagement();
         private readonly IDiscountManagement _discountManagement = new DiscountManagement();
+        private readonly ISalesPersonCommissionReportManagement _salesPersonCommissionManagement = new SalesPersonCommissionReportManagement();
         public SalesTrackUIService()
         {           
         }
@@ -61,9 +62,9 @@ namespace SalesTrackData
         {
             return _discountManagement.GetDiscounts();
         }
-        public GetSalesPersonCommissionReportResult GetSalesPersonCommissionReport()
+        public GetSalesPersonCommissionReportResult GetSalesPersonCommissionReport(DateTime quarterStart, DateTime quarterEnd)
         {
-            throw new System.NotImplementedException();
+            return _salesPersonCommissionManagement.GetSalesPersonCommissionReport(quarterStart, quarterEnd);
         }
     }
 }

@@ -51,8 +51,8 @@ namespace SalesTrackBusiness
                 new Customer { CustomerId = 2, FirstName = "Tiffany", LastName = "Lime", Address = "999 South Parson Rd, Duluth, GA 30022", Phone = "443-123-5678", StartDate = new DateTime(2024,2,19) });
 
             modelBuilder.Entity<Sales>().HasData(
-                new Sales {SalesId=1, ProductId=5, SalesDate = new DateTime(2024, 12, 28), CustomerId = 1, SalesPersonId = 2, Commission =10 },
-                new Sales {SalesId=2, ProductId=6, SalesDate = new DateTime(2024, 03, 15), CustomerId = 2, SalesPersonId = 1, Commission = 20});           
+                new Sales {SalesId=1, ProductId=5, SalesDate = new DateTime(2024, 12, 28), CustomerId = 1, SalesPrice = 1500, SalesPersonId = 2, Commission =10 },
+                new Sales {SalesId=2, ProductId=6, SalesDate = new DateTime(2024, 03, 15), CustomerId = 2, SalesPersonId = 1, SalesPrice = 1600, Commission = 20});           
         }
     }
 }
