@@ -67,6 +67,8 @@ namespace SalesTrackBusiness
 
                 var salesPersonToChange = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == salesPerson.SalesPersonId).FirstOrDefault();
                 salesPersonToChange = salesPerson;
+                _salesTrackerContext.SalesPersons.Update(salesPersonToChange);
+
                 _salesTrackerContext.SaveChanges();
            
                 var salesPersonChanged = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == salesPerson.SalesPersonId).FirstOrDefault();

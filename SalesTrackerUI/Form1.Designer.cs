@@ -41,15 +41,14 @@
             tabCustomers = new TabPage();
             dataGridViewCustomer = new DataGridView();
             tabProducts = new TabPage();
-            button2 = new Button();
+            buttonProdcut = new Button();
             dataGridViewProducts = new DataGridView();
             tabSalesPersons = new TabPage();
-            button1 = new Button();
+            buttonSalesPersons = new Button();
             dataGridViewSalesPersons = new DataGridView();
             SalesTracker = new TabControl();
             tabDiscount = new TabPage();
             dataGridView2 = new DataGridView();
-            tabPage1 = new TabPage();
             tabCommisionReport.SuspendLayout();
             tabSales.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSales).BeginInit();
@@ -134,6 +133,7 @@
             comboBox_SalesPersons.Name = "comboBox_SalesPersons";
             comboBox_SalesPersons.Size = new Size(464, 56);
             comboBox_SalesPersons.TabIndex = 15;
+            comboBox_SalesPersons.UseWaitCursor = true;
             // 
             // tabSales
             // 
@@ -188,7 +188,7 @@
             // 
             // tabProducts
             // 
-            tabProducts.Controls.Add(button2);
+            tabProducts.Controls.Add(buttonProdcut);
             tabProducts.Controls.Add(dataGridViewProducts);
             tabProducts.Location = new Point(12, 69);
             tabProducts.Name = "tabProducts";
@@ -198,16 +198,16 @@
             tabProducts.Text = "Products";
             tabProducts.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // buttonProdcut
             // 
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Location = new Point(1941, 496);
-            button2.Name = "button2";
-            button2.Size = new Size(295, 69);
-            button2.TabIndex = 2;
-            button2.Text = "Update";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += UpdateSalesPerson_Click;
+            buttonProdcut.FlatStyle = FlatStyle.Flat;
+            buttonProdcut.Location = new Point(1941, 496);
+            buttonProdcut.Name = "buttonProdcut";
+            buttonProdcut.Size = new Size(295, 69);
+            buttonProdcut.TabIndex = 2;
+            buttonProdcut.Text = "Update";
+            buttonProdcut.UseVisualStyleBackColor = true;
+            buttonProdcut.Click += UpdateProduct_Click;
             // 
             // dataGridViewProducts
             // 
@@ -215,12 +215,12 @@
             dataGridViewProducts.Location = new Point(-12, 6);
             dataGridViewProducts.Name = "dataGridViewProducts";
             dataGridViewProducts.RowHeadersWidth = 123;
-            dataGridViewProducts.Size = new Size(2548, 450);
+            dataGridViewProducts.Size = new Size(2572, 450);
             dataGridViewProducts.TabIndex = 0;
             // 
             // tabSalesPersons
             // 
-            tabSalesPersons.Controls.Add(button1);
+            tabSalesPersons.Controls.Add(buttonSalesPersons);
             tabSalesPersons.Controls.Add(dataGridViewSalesPersons);
             tabSalesPersons.Location = new Point(12, 69);
             tabSalesPersons.Name = "tabSalesPersons";
@@ -230,16 +230,16 @@
             tabSalesPersons.Text = "Sales Persons";
             tabSalesPersons.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // buttonSalesPersons
             // 
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Location = new Point(1934, 589);
-            button1.Name = "button1";
-            button1.Size = new Size(295, 69);
-            button1.TabIndex = 1;
-            button1.Text = "Update";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += UpdateProduct_Click;
+            buttonSalesPersons.FlatStyle = FlatStyle.Flat;
+            buttonSalesPersons.Location = new Point(1934, 589);
+            buttonSalesPersons.Name = "buttonSalesPersons";
+            buttonSalesPersons.Size = new Size(295, 69);
+            buttonSalesPersons.TabIndex = 1;
+            buttonSalesPersons.Text = "Update";
+            buttonSalesPersons.UseVisualStyleBackColor = true;
+            buttonSalesPersons.Click += UpdateSalesPerson_Click;
             // 
             // dataGridViewSalesPersons
             // 
@@ -247,7 +247,7 @@
             dataGridViewSalesPersons.Location = new Point(0, 6);
             dataGridViewSalesPersons.Name = "dataGridViewSalesPersons";
             dataGridViewSalesPersons.RowHeadersWidth = 123;
-            dataGridViewSalesPersons.Size = new Size(2238, 577);
+            dataGridViewSalesPersons.Size = new Size(2566, 577);
             dataGridViewSalesPersons.TabIndex = 0;
             // 
             // SalesTracker
@@ -258,7 +258,6 @@
             SalesTracker.Controls.Add(tabSales);
             SalesTracker.Controls.Add(tabDiscount);
             SalesTracker.Controls.Add(tabCommisionReport);
-            SalesTracker.Controls.Add(tabPage1);
             SalesTracker.Location = new Point(2, 12);
             SalesTracker.Name = "SalesTracker";
             SalesTracker.SelectedIndex = 0;
@@ -283,16 +282,6 @@
             dataGridView2.RowHeadersWidth = 123;
             dataGridView2.Size = new Size(1371, 450);
             dataGridView2.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            tabPage1.Location = new Point(12, 69);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(2566, 755);
-            tabPage1.TabIndex = 6;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -335,10 +324,9 @@
         private TabPage tabDiscount;
         private DataGridView dataGridView2;
         private Button button3;
-        private Button button2;
-        private Button button1;
+        private Button buttonProdcut;
+        private Button buttonSalesPersons;
         private DataGridViewTextBoxColumn ProdcutName;
-        private TabPage tabPage1;
         private ComboBox comboBoxYear;
         private Label label1;
         private ComboBox comboBoxQuarter;

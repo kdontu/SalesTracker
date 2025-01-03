@@ -53,7 +53,6 @@ namespace SalesTrackBusiness
                 ProductDTO productDTOChanged = new ProductDTO();
 
                 var productToChange = _salesTrackerContext.Products.Where(x => x.ProductId == productDTO.ProductId).FirstOrDefault();
-                //productToChange.ProductId = productDTO.ProductId;
                 productToChange.Name = productDTO.Name;
                 productToChange.Manufacturer = productDTO.Manufacturer;
                 productToChange.CommissionPercentage = Convert.ToDecimal(productDTO.CommissionPercentage);
@@ -63,10 +62,8 @@ namespace SalesTrackBusiness
                 productToChange.Style = productDTO.Style;
                 productToChange.Description = productDTO.Description;
 
-                //productToChange = product;
-                //_salesTrackerContext.ChangeTracker.AcceptAllChanges();
+
                 _salesTrackerContext.Products.Update(productToChange);
-                //_salesTrackerContext.Entry(productToChange).State = EntityState.Modified;
                
                 _salesTrackerContext.SaveChanges();
                 var productChanged = _salesTrackerContext.Products.Where(x => x.ProductId == productToChange.ProductId).FirstOrDefault();

@@ -16,13 +16,14 @@ namespace SalesTrackData
         private readonly ISalesPersonManagement _salesPersonManagement = new SalesPersonManagement();
         private readonly IDiscountManagement _discountManagement = new DiscountManagement();
         private readonly ISalesPersonCommissionReportManagement _salesPersonCommissionManagement = new SalesPersonCommissionReportManagement();
+ 
         public SalesTrackUIService()
         {           
         }
         public void Initialize()
         {
-            _dbManagement.InitializeDb();
-        }
+            _dbManagement.InitializeDb();        
+    }
         public void UnInitialize()
         {
             _dbManagement.UnInitializeDb();

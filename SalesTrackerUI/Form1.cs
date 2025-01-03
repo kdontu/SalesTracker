@@ -3,11 +3,15 @@ using SalesTrackCommon.Models;
 using SalesTrackBusiness.Entities;
 using SalesTrackerUI;
 using SalesTrackCommon.Models.Results;
+using Microsoft.VisualBasic.Logging;
+using log4net;
+using log4net.Config;
 
 namespace SalesTracker
 {
     public partial class Form1 : Form
     {
+        private ILog logger;
         public Form1()
         {
             InitializeComponent();
@@ -19,11 +23,15 @@ namespace SalesTracker
         {
             salesTrackBusiness = new SalesTrackUIService();
             salesTrackBusiness.Initialize();
+            BasicConfigurator.Configure();
+            logger = LogManager.GetLogger("SalesTrackerLogger");
+            logger.Info("Initia;ized  salesTrack Business !");
             RefreshDataGrid();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            logger.Info("UnInitialized  salesTrack Business !");
             salesTrackBusiness.UnInitialize();
         }
 
@@ -40,27 +48,34 @@ namespace SalesTracker
                     PurchasePrice = (string)dataGridViewProducts.CurrentRow.Cells["PurchasePrice"].Value,
                     SalePrice = (string)dataGridViewProducts.CurrentRow.Cells["SalePrice"].Value,
                     QtyOnHand = (string)dataGridViewProducts.CurrentRow.Cells["QtyOnHand"].Value,
-                    CommissionPercentage = (string)dataGridViewProducts.CurrentRow.Cells["CommissionPercentage"].Value
+                    CommissionPercentage = (string)dataGridViewProducts.CurrentRow.Cells["CommissionPercentage"].Value,
+                    Description = (string)dataGridViewProducts.CurrentRow.Cells["Description"].Value
                 };
                 UpdateProductResult updateProductResult = salesTrackBusiness.UpdateProduct(product);
                 if (!updateProductResult.HasErrors)
                 {
                     GetProductsResult productsResult = salesTrackBusiness.GetProducts();
                     if (!productsResult.HasErrors)
-                        dataGridViewProducts.DataSource = products;
+                    {
+                        products = productsResult.Products;
+                        dataGridViewProducts.DataSource = productsResult.Products;
+                    }
                     else
                     {
+                        logger.Error(productsResult.ResponseMessage);
                         MessageBox.Show(productsResult.ResponseMessage);
                     }
                 }
                 else
                 {
+                    logger.Error(updateProductResult.ResponseMessage);
                     MessageBox.Show(updateProductResult.ResponseMessage);
                 }
 
             }
             catch (Exception ex)
             {
+                logger.Error(ex.ToString());
                 MessageBox.Show(ex.Message);
             }
         }
@@ -89,11 +104,13 @@ namespace SalesTracker
                         dataGridViewSalesPersons.DataSource = salesPersonsResult.SalesPersons;
                     else
                     {
+                        logger.Error(salesPersonsResult.ResponseMessage);
                         MessageBox.Show(salesPersonsResult.ResponseMessage);
                     }
                 }
                 else
                 {
+                    logger.Error(updateSalesPerson.ResponseMessage);
                     MessageBox.Show(updateSalesPerson.ResponseMessage);
                 }
             }
@@ -107,7 +124,7 @@ namespace SalesTracker
         {
             try
             {
-                CreateSaleForm sale = new CreateSaleForm(this, salesTrackBusiness);
+                CreateSaleForm sale = new CreateSaleForm(this, salesTrackBusiness, logger);
                 sale.salesTrackBusiness = salesTrackBusiness;
                 sale.Show();
             }
@@ -127,6 +144,7 @@ namespace SalesTracker
             }
             else
             {
+                logger.Error(productsResult.ResponseMessage);
                 MessageBox.Show(productsResult.ResponseMessage);
             }
             GetCustomersResult customersResult = salesTrackBusiness.GetCustomers();
@@ -136,6 +154,7 @@ namespace SalesTracker
             }
             else
             {
+                logger.Error(customersResult.ResponseMessage);
                 MessageBox.Show(customersResult.ResponseMessage);
             }
             GetSalesResult getSalesResult = salesTrackBusiness.GetSales();
@@ -143,6 +162,7 @@ namespace SalesTracker
                 dataGridViewSales.DataSource = getSalesResult.Sales;
             else
             {
+                logger.Error(getSalesResult.ResponseMessage);
                 MessageBox.Show(getSalesResult.ResponseMessage);
             }
             GetSalesPersonsResult salesPersonsResult = salesTrackBusiness.GetSalesPersons();
@@ -150,23 +170,33 @@ namespace SalesTracker
                 dataGridViewSalesPersons.DataSource = salesPersonsResult.SalesPersons;
             else
             {
+                logger.Error(salesPersonsResult.ResponseMessage);
                 MessageBox.Show(salesPersonsResult.ResponseMessage);
             }
 
             GetDiscountsResult discountsResult = salesTrackBusiness.GetDiscounts();
             if (!discountsResult.HasErrors)
+            {
                 dataGridView2.DataSource = discountsResult.Discounts;
+            }
             else
             {
+                logger.Error(discountsResult.ResponseMessage);
                 MessageBox.Show(discountsResult.ResponseMessage);
             }
             if (!salesPersonsResult.HasErrors)
+            {
                 comboBox_SalesPersons.DataSource = salesPersonsResult.SalesPersons;
+                comboBox_SalesPersons.DisplayMember = "FirstName";
+                comboBox_SalesPersons.SelectedIndex = 0;
+            }
             else
             {
+                logger.Error(salesPersonsResult.ResponseMessage);
                 MessageBox.Show(salesPersonsResult.ResponseMessage);
             }
-        
+
+
             comboBoxYear.DataSource = Enumerable.Range(1950, DateTime.UtcNow.Year - 1949).Reverse().ToList();
         }
 
@@ -175,7 +205,7 @@ namespace SalesTracker
             try
             {
                 GetSalesPersonCommissionReportResult result = new GetSalesPersonCommissionReportResult();
-                
+
                 switch (comboBoxQuarter.SelectedIndex)
                 {
                     case 0:
@@ -191,23 +221,27 @@ namespace SalesTracker
                         result = salesTrackBusiness.GetSalesPersonCommissionReport(new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 10, 1), new DateTime(Convert.ToInt32(comboBoxYear.SelectedItem), 12, 31));
                         break;
 
-                }   
-                if(!result.HasErrors)
+                }
+                if (!result.HasErrors)
                 {
-                    GenerateCommissionReportForm commissionForm = new GenerateCommissionReportForm(salesTrackBusiness, result.salesPersonCommissionReport);
+                    GenerateCommissionReportForm commissionForm = new GenerateCommissionReportForm(salesTrackBusiness, result.salesPersonCommissionReport, logger);
                     commissionForm.SalesTrackBusiness = salesTrackBusiness;
                     commissionForm.Show();
                 }
                 else
                 {
+                    logger.Error(result.ResponseMessage);
                     MessageBox.Show(result.ResponseMessage);
-                }              
+                }
             }
             catch (Exception ex)
             {
+                logger.Error(ex.ToString());
                 MessageBox.Show(ex.Message);
             }
 
         }
+
+       
     }
 }
