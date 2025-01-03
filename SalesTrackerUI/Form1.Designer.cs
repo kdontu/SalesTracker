@@ -73,7 +73,7 @@
             tabCommisionReport.Controls.Add(comboBox_SalesPersons);
             tabCommisionReport.Location = new Point(12, 69);
             tabCommisionReport.Name = "tabCommisionReport";
-            tabCommisionReport.Size = new Size(2566, 755);
+            tabCommisionReport.Size = new Size(2900, 755);
             tabCommisionReport.TabIndex = 4;
             tabCommisionReport.Text = "Commission Report";
             tabCommisionReport.UseVisualStyleBackColor = true;
@@ -141,7 +141,7 @@
             tabSales.Controls.Add(dataGridViewSales);
             tabSales.Location = new Point(12, 69);
             tabSales.Name = "tabSales";
-            tabSales.Size = new Size(2566, 755);
+            tabSales.Size = new Size(2900, 755);
             tabSales.TabIndex = 3;
             tabSales.Text = "Sales";
             tabSales.UseVisualStyleBackColor = true;
@@ -149,7 +149,7 @@
             // button3
             // 
             button3.FlatStyle = FlatStyle.Flat;
-            button3.Location = new Point(1082, 486);
+            button3.Location = new Point(2513, 459);
             button3.Name = "button3";
             button3.Size = new Size(295, 69);
             button3.TabIndex = 2;
@@ -163,7 +163,7 @@
             dataGridViewSales.Location = new Point(3, 3);
             dataGridViewSales.Name = "dataGridViewSales";
             dataGridViewSales.RowHeadersWidth = 123;
-            dataGridViewSales.Size = new Size(1374, 450);
+            dataGridViewSales.Size = new Size(2805, 450);
             dataGridViewSales.TabIndex = 0;
             // 
             // tabCustomers
@@ -172,7 +172,7 @@
             tabCustomers.Location = new Point(12, 69);
             tabCustomers.Name = "tabCustomers";
             tabCustomers.Padding = new Padding(3);
-            tabCustomers.Size = new Size(2566, 755);
+            tabCustomers.Size = new Size(2900, 755);
             tabCustomers.TabIndex = 2;
             tabCustomers.Text = "Customers";
             tabCustomers.UseVisualStyleBackColor = true;
@@ -183,7 +183,7 @@
             dataGridViewCustomer.Location = new Point(6, 6);
             dataGridViewCustomer.Name = "dataGridViewCustomer";
             dataGridViewCustomer.RowHeadersWidth = 123;
-            dataGridViewCustomer.Size = new Size(1850, 450);
+            dataGridViewCustomer.Size = new Size(2865, 450);
             dataGridViewCustomer.TabIndex = 0;
             // 
             // tabProducts
@@ -193,7 +193,7 @@
             tabProducts.Location = new Point(12, 69);
             tabProducts.Name = "tabProducts";
             tabProducts.Padding = new Padding(3);
-            tabProducts.Size = new Size(2566, 755);
+            tabProducts.Size = new Size(2900, 755);
             tabProducts.TabIndex = 1;
             tabProducts.Text = "Products";
             tabProducts.UseVisualStyleBackColor = true;
@@ -201,7 +201,7 @@
             // buttonProdcut
             // 
             buttonProdcut.FlatStyle = FlatStyle.Flat;
-            buttonProdcut.Location = new Point(1941, 496);
+            buttonProdcut.Location = new Point(2265, 480);
             buttonProdcut.Name = "buttonProdcut";
             buttonProdcut.Size = new Size(295, 69);
             buttonProdcut.TabIndex = 2;
@@ -215,7 +215,7 @@
             dataGridViewProducts.Location = new Point(-12, 6);
             dataGridViewProducts.Name = "dataGridViewProducts";
             dataGridViewProducts.RowHeadersWidth = 123;
-            dataGridViewProducts.Size = new Size(2572, 450);
+            dataGridViewProducts.Size = new Size(2801, 450);
             dataGridViewProducts.TabIndex = 0;
             // 
             // tabSalesPersons
@@ -225,7 +225,7 @@
             tabSalesPersons.Location = new Point(12, 69);
             tabSalesPersons.Name = "tabSalesPersons";
             tabSalesPersons.Padding = new Padding(3);
-            tabSalesPersons.Size = new Size(2566, 755);
+            tabSalesPersons.Size = new Size(2900, 755);
             tabSalesPersons.TabIndex = 0;
             tabSalesPersons.Text = "Sales Persons";
             tabSalesPersons.UseVisualStyleBackColor = true;
@@ -233,7 +233,7 @@
             // buttonSalesPersons
             // 
             buttonSalesPersons.FlatStyle = FlatStyle.Flat;
-            buttonSalesPersons.Location = new Point(1934, 589);
+            buttonSalesPersons.Location = new Point(2513, 589);
             buttonSalesPersons.Name = "buttonSalesPersons";
             buttonSalesPersons.Size = new Size(295, 69);
             buttonSalesPersons.TabIndex = 1;
@@ -247,7 +247,7 @@
             dataGridViewSalesPersons.Location = new Point(0, 6);
             dataGridViewSalesPersons.Name = "dataGridViewSalesPersons";
             dataGridViewSalesPersons.RowHeadersWidth = 123;
-            dataGridViewSalesPersons.Size = new Size(2566, 577);
+            dataGridViewSalesPersons.Size = new Size(2808, 577);
             dataGridViewSalesPersons.TabIndex = 0;
             // 
             // SalesTracker
@@ -261,7 +261,7 @@
             SalesTracker.Location = new Point(2, 12);
             SalesTracker.Name = "SalesTracker";
             SalesTracker.SelectedIndex = 0;
-            SalesTracker.Size = new Size(2590, 836);
+            SalesTracker.Size = new Size(2924, 836);
             SalesTracker.TabIndex = 0;
             // 
             // tabDiscount
@@ -269,7 +269,7 @@
             tabDiscount.Controls.Add(dataGridView2);
             tabDiscount.Location = new Point(12, 69);
             tabDiscount.Name = "tabDiscount";
-            tabDiscount.Size = new Size(2566, 755);
+            tabDiscount.Size = new Size(2900, 755);
             tabDiscount.TabIndex = 5;
             tabDiscount.Text = "Discount";
             tabDiscount.UseVisualStyleBackColor = true;
@@ -280,7 +280,7 @@
             dataGridView2.Location = new Point(3, 0);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.RowHeadersWidth = 123;
-            dataGridView2.Size = new Size(1371, 450);
+            dataGridView2.Size = new Size(2838, 450);
             dataGridView2.TabIndex = 0;
             // 
             // Form1

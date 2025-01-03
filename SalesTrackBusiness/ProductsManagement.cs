@@ -68,7 +68,7 @@ namespace SalesTrackBusiness
                 _salesTrackerContext.SaveChanges();
                 var productChanged = _salesTrackerContext.Products.Where(x => x.ProductId == productToChange.ProductId).FirstOrDefault();
                 
-                productDTOChanged.ProductId = productChanged.ProductId;
+                //productDTOChanged.ProductId = productChanged.ProductId;
                 productDTOChanged.Name = productChanged.Name;
                 productDTOChanged.Manufacturer = productChanged.Manufacturer;
                 productDTOChanged.CommissionPercentage = productChanged.CommissionPercentage.ToString();

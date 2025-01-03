@@ -51,27 +51,26 @@ namespace SalesTrackBusiness
             
             try
             {
-                SalesPersonDTO salesPersonDTOChanged = new SalesPersonDTO();
+               
 
-                SalesPerson salesPerson = new SalesPerson();
-                salesPerson.SalesPersonId = salesDTOPerson.SalesPersonId;
-                salesPerson.FirstName = salesDTOPerson.FirstName;
-                salesPerson.LastName = salesDTOPerson.LastName;
-                salesPerson.Address = salesDTOPerson.Address;
-                salesPerson.Phone = salesDTOPerson.Phone;
-                salesPerson.Manager = salesDTOPerson.Manager;
-                salesPerson.TerminationDate = salesDTOPerson.TerminationDate;
-                salesPerson.Commission = salesDTOPerson.Commission;
-                salesPerson.StartDate = salesDTOPerson.StartDate;
+                var SalesPersonToChange = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == salesDTOPerson.SalesPersonId).FirstOrDefault();
+
+                //SalesPersonToChange.SalesPersonId = salesDTOPerson.SalesPersonId;
+                SalesPersonToChange.FirstName = salesDTOPerson.FirstName;
+                SalesPersonToChange.LastName = salesDTOPerson.LastName;
+                SalesPersonToChange.Address = salesDTOPerson.Address;
+                SalesPersonToChange.Phone = salesDTOPerson.Phone;
+                SalesPersonToChange.Manager = salesDTOPerson.Manager;
+                SalesPersonToChange.TerminationDate = salesDTOPerson.TerminationDate;
+                SalesPersonToChange.Commission = salesDTOPerson.Commission;
+                SalesPersonToChange.StartDate = salesDTOPerson.StartDate;
               
-
-                var salesPersonToChange = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == salesPerson.SalesPersonId).FirstOrDefault();
-                salesPersonToChange = salesPerson;
-                _salesTrackerContext.SalesPersons.Update(salesPersonToChange);
+                 _salesTrackerContext.SalesPersons.Update(SalesPersonToChange);
 
                 _salesTrackerContext.SaveChanges();
-           
-                var salesPersonChanged = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == salesPerson.SalesPersonId).FirstOrDefault();
+
+                SalesPersonDTO salesPersonDTOChanged = new SalesPersonDTO();
+                var salesPersonChanged = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == SalesPersonToChange.SalesPersonId).FirstOrDefault();
                 salesPersonDTOChanged.SalesPersonId = salesPersonChanged.SalesPersonId;
                 salesPersonDTOChanged.FirstName = salesPersonChanged.FirstName;
                 salesPersonDTOChanged.LastName = salesPersonChanged.LastName;

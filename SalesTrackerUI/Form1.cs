@@ -25,7 +25,7 @@ namespace SalesTracker
             salesTrackBusiness.Initialize();
             BasicConfigurator.Configure();
             logger = LogManager.GetLogger("SalesTrackerLogger");
-            logger.Info("Initia;ized  salesTrack Business !");
+            logger.Info("Initialized  salesTrack Business !");
             RefreshDataGrid();
         }
 
