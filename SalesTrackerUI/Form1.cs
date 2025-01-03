@@ -139,7 +139,7 @@ namespace SalesTracker
             GetProductsResult productsResult = salesTrackBusiness.GetProducts();
             if (!productsResult.HasErrors)
             {
-                products = productsResult.Products;
+                products = productsResult.Products;                
                 dataGridViewProducts.DataSource = products;
             }
             else
@@ -224,7 +224,7 @@ namespace SalesTracker
                 }
                 if (!result.HasErrors)
                 {
-                    GenerateCommissionReportForm commissionForm = new GenerateCommissionReportForm(salesTrackBusiness, result.salesPersonCommissionReport, comboBoxQuarter.SelectedText, logger);
+                    GenerateCommissionReportForm commissionForm = new GenerateCommissionReportForm(salesTrackBusiness, result.salesPersonCommissionReport, comboBoxQuarter.SelectedItem.ToString(), logger);
                     commissionForm.SalesTrackBusiness = salesTrackBusiness;
                     commissionForm.Show();
                 }

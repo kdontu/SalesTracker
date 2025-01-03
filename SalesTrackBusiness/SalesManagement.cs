@@ -1,7 +1,9 @@
-﻿using SalesTrackBusiness.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SalesTrackBusiness.Entities;
 using SalesTrackBusiness.Interfaces;
 using SalesTrackCommon.Models;
 using SalesTrackCommon.Models.Results;
+using System.Reflection.Metadata;
 
 namespace SalesTrackBusiness
 {
@@ -57,8 +59,7 @@ namespace SalesTrackBusiness
                 saleObj.SalesDate = salesDTO.SalesDate;
                 
                 // Calculate Sale Price from the product definition
-                Product product = new Product();
-                product = _salesTrackerContext.Products.Where(x => x.ProductId == saleObj.ProductId).FirstOrDefault();
+                var product = _salesTrackerContext.Products.Where(x => x.ProductId == saleObj.ProductId).FirstOrDefault();
                 if ((product != null) && (product.QtyOnHand <= 0))
                 {
                     createSaleResult.ResponseMessage = string.Format("Product {0} is out of stock", product.Name );
@@ -74,16 +75,16 @@ namespace SalesTrackBusiness
                 else
                     saleObj.SalesPrice = product.SalePrice;
 
-                SalesPerson SalesPerson = new SalesPerson();
-                SalesPerson = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == saleObj.SalesPersonId).FirstOrDefault();
+                //SalesPerson SalesPerson = new SalesPerson();
+                SalesPerson salesPerson = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == saleObj.SalesPersonId).FirstOrDefault();
 
                 // Calculate commission for the sales person
                 Decimal commission = Convert.ToDecimal(Convert.ToInt64(saleObj.SalesPrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
-                
+                                        
                 // adding the commission to the sales person object
-                SalesPerson.Commission += commission;
-                _salesTrackerContext.Update(SalesPerson);
-
+                salesPerson.Commission += commission;
+                _salesTrackerContext.Update(salesPerson);
+             
                 // save the commission to the sales object for the new sale
                 saleObj.Commission = commission;
                 //add the sale to the sales table
@@ -94,7 +95,7 @@ namespace SalesTrackBusiness
                 _salesTrackerContext.Update(product);
 
                 _salesTrackerContext.SaveChanges();
-
+                           
                 // get the most recent sale object
                 saleObj = _salesTrackerContext.Sales.OrderByDescending(x => x.SalesId).FirstOrDefault();
 
@@ -105,6 +106,7 @@ namespace SalesTrackBusiness
                 salesDTONew.SalesDate = saleObj.SalesDate;
                 salesDTONew.SalesPrice = saleObj.SalesPrice;
                 salesDTONew.Commission = saleObj.Commission;
+
             }
             catch (Exception ex)
             {
