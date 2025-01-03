@@ -59,7 +59,7 @@ namespace SalesTrackBusiness
                 // Calculate Sale Price from the product definition
                 Product product = new Product();
                 product = _salesTrackerContext.Products.Where(x => x.ProductId == saleObj.ProductId).FirstOrDefault();
-                if ((product != null) && (product.QtyOnHand < 0))
+                if ((product != null) && (product.QtyOnHand <= 0))
                 {
                     createSaleResult.ResponseMessage = string.Format("Product {0} is out of stock", product.Name );
                     createSaleResult.HasErrors = true;
@@ -68,7 +68,7 @@ namespace SalesTrackBusiness
                 Discount discount = _salesTrackerContext.Discounts.Where(x => x.ProductId == product.ProductId).FirstOrDefault();
                 if ((discount != null) && (DateTime.Now.Date >= discount.BeginDate) && (DateTime.Now.Date <= discount.EndDate))
                 {
-                    saleObj.SalesPrice = product.SalePrice - product.SalePrice * discount.DiscountPercentage;
+                    saleObj.SalesPrice = product.SalePrice - product.SalePrice * (discount.DiscountPercentage/100);
 
                 }
                 else
@@ -79,19 +79,24 @@ namespace SalesTrackBusiness
 
                 // Calculate commission for the sales person
                 Decimal commission = Convert.ToDecimal(Convert.ToInt64(saleObj.SalesPrice) * Convert.ToInt64(product.CommissionPercentage) * 0.01);
+                
+                // adding the commission to the sales person object
                 SalesPerson.Commission += commission;
-                saleObj.Commission = commission;
-              
                 _salesTrackerContext.Update(SalesPerson);
-               
-                // Reduce product quantity by 1
-                product.QtyOnHand -= 1;
-                _salesTrackerContext.Update(product);
-               
+
+                // save the commission to the sales object for the new sale
+                saleObj.Commission = commission;
+                //add the sale to the sales table
                 _salesTrackerContext.Sales.Add(saleObj);
+            
+                // Reduce product quantity by 1
+                product.QtyOnHand -= 1;             
+                _salesTrackerContext.Update(product);
+
                 _salesTrackerContext.SaveChanges();
 
-                saleObj = _salesTrackerContext.Sales.Where(x => x.ProductId == saleObj.ProductId).FirstOrDefault();
+                // get the most recent sale object
+                saleObj = _salesTrackerContext.Sales.OrderByDescending(x => x.SalesId).FirstOrDefault();
 
                 salesDTONew.SalesId = saleObj.SalesId;
                 salesDTONew.SalesPersonId = saleObj.SalesPersonId;

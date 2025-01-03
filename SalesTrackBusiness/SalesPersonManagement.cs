@@ -51,11 +51,7 @@ namespace SalesTrackBusiness
             
             try
             {
-               
-
                 var SalesPersonToChange = _salesTrackerContext.SalesPersons.Where(x => x.SalesPersonId == salesDTOPerson.SalesPersonId).FirstOrDefault();
-
-                //SalesPersonToChange.SalesPersonId = salesDTOPerson.SalesPersonId;
                 SalesPersonToChange.FirstName = salesDTOPerson.FirstName;
                 SalesPersonToChange.LastName = salesDTOPerson.LastName;
                 SalesPersonToChange.Address = salesDTOPerson.Address;

@@ -224,7 +224,7 @@ namespace SalesTracker
                 }
                 if (!result.HasErrors)
                 {
-                    GenerateCommissionReportForm commissionForm = new GenerateCommissionReportForm(salesTrackBusiness, result.salesPersonCommissionReport, logger);
+                    GenerateCommissionReportForm commissionForm = new GenerateCommissionReportForm(salesTrackBusiness, result.salesPersonCommissionReport, comboBoxQuarter.SelectedText, logger);
                     commissionForm.SalesTrackBusiness = salesTrackBusiness;
                     commissionForm.Show();
                 }
